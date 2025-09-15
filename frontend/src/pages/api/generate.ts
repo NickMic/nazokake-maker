@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     // OpenAI API呼び出し例（Chat Completions）
     console.log('APIキー存在確認:', !!OPENAI_API_KEY);
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response: Response = await fetch('https://api.openai.com/v1/chat/completions', {
     console.log('外部APIステータス:', response.status);
       method: 'POST',
       headers: {
@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         Authorization: `Bearer ${OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini', // モデルは必要に応じて変更
+        model: 'gpt-5', // モデルは必要に応じて変更
         messages: [
           { role: 'system', content: 'You are a helpful assistant.' },
           { role: 'user', content: prompt },
