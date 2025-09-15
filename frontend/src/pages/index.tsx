@@ -1,34 +1,40 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function Home() {
-  const [keyword, setKeyword] = useState("");
-  const [result, setResult] = useState("");
+  const [prompt, setPrompt] = useState('');
+  const [result, setResult] = useState('');
 
   const handleGenerate = async () => {
-    const res = await fetch(`/api/generate?keyword=${encodeURIComponent(keyword)}`);
-    const data = await res.json();
-    setResult(data.result);
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Error: ${res.status}`);
+      }
+
+      const data = await res.json();
+      setResult(data.result);
+    } catch (err) {
+      console.error(err);
+      setResult('エラーが発生しました');
+    }
   };
 
   return (
-    <main style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>AIなぞかけメーカー</h1>
-      <p>ここからアプリが始まります。</p>
-
+    <main>
+      <h1>テキスト生成</h1>
       <input
         type="text"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
         placeholder="お題を入力"
-        style={{ marginRight: "0.5rem" }}
       />
-      <button onClick={handleGenerate}>なぞかけ生成</button>
-
-      {result && (
-        <div style={{ marginTop: "1rem" }}>
-          <strong>結果:</strong> {result}
-        </div>
-      )}
+      <button onClick={handleGenerate}>生成</button>
+      {result && <p>結果: {result}</p>}
     </main>
   );
 }
