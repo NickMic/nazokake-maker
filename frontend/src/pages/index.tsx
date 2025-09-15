@@ -5,8 +5,9 @@ export default function Home() {
   const [result, setResult] = useState("");
 
   const handleGenerate = async () => {
-    // ここでAPI呼び出しや生成処理を行う
-    setResult(`「${keyword}」でなぞかけ生成！（仮）`);
+    const res = await fetch(`/api/generate?keyword=${encodeURIComponent(keyword)}`);
+    const data = await res.json();
+    setResult(data.result);
   };
 
   return (
