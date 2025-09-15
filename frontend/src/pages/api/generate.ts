@@ -17,7 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // OpenAI API呼び出し例（Chat Completions）
+    console.log('APIキー存在確認:', !!OPENAI_API_KEY);
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    console.log('外部APIステータス:', response.status);
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
