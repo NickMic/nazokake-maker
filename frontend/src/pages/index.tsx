@@ -9,7 +9,11 @@ export default function Home() {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({
+          theme: prompt,
+          style: '標準',
+          difficulty: '普通',
+        }),
       });
 
       if (!res.ok) {
@@ -26,12 +30,12 @@ export default function Home() {
 
   return (
     <main>
-      <h1>テキスト生成</h1>
+      <h1>なぞかけ生成</h1>
       <input
         type="text"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        placeholder="お題を入力"
+        placeholder="お題を入力（例：寿司）"
       />
       <button onClick={handleGenerate}>生成</button>
       {result && <p>結果: {result}</p>}
